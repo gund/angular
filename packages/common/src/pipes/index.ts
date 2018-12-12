@@ -18,7 +18,7 @@ import {I18nPluralPipe} from './i18n_plural_pipe';
 import {I18nSelectPipe} from './i18n_select_pipe';
 import {JsonPipe} from './json_pipe';
 import {KeyValue, KeyValuePipe} from './keyvalue_pipe';
-import {CurrencyPipe, DecimalPipe, PercentPipe} from './number_pipe';
+import {CurrencyPipe, DecimalPipe, PercentPipe, CURRENCY_CODE} from './number_pipe';
 import {SlicePipe} from './slice_pipe';
 
 export {
@@ -36,6 +36,7 @@ export {
   SlicePipe,
   TitleCasePipe,
   UpperCasePipe,
+  CURRENCY_CODE,
 };
 
 

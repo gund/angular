@@ -5,11 +5,29 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
+import {
+  Inject,
+  InjectionToken,
+  LOCALE_ID,
+  Pipe,
+  PipeTransform,
+  Optional,
+} from '@angular/core';
 
-import {Inject, LOCALE_ID, Pipe, PipeTransform} from '@angular/core';
 import {formatCurrency, formatNumber, formatPercent} from '../i18n/format_number';
 import {getCurrencySymbol} from '../i18n/locale_data_api';
 import {invalidPipeArgumentError} from './invalid_pipe_argument_error';
+
+/**
+ * @ngModule CommonModule
+ * @description
+ *
+ * DI Token that allows to set default currency code.
+ * Will be used by {@link CurrencyPipe}.
+ *
+ * @publicApi
+ */
+export const CURRENCY_CODE = new InjectionToken<string>('CurrencyCode');
 
 /**
  * @ngModule CommonModule
@@ -155,7 +173,10 @@ export class PercentPipe implements PipeTransform {
  */
 @Pipe({name: 'currency'})
 export class CurrencyPipe implements PipeTransform {
-  constructor(@Inject(LOCALE_ID) private _locale: string) {}
+  constructor(
+    @Inject(LOCALE_ID) private _locale: string,
+    @Optional() @Inject(CURRENCY_CODE) private _currencyCode = 'USD',
+  ) {}
 
   /**
    *
@@ -205,7 +226,7 @@ export class CurrencyPipe implements PipeTransform {
       display = display ? 'symbol' : 'code';
     }
 
-    let currency: string = currencyCode || 'USD';
+    let currency: string = currencyCode || this._currencyCode;
     if (display !== 'code') {
       if (display === 'symbol' || display === 'symbol-narrow') {
         currency = getCurrencySymbol(currency, display === 'symbol' ? 'wide' : 'narrow', locale);
